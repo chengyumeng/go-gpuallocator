@@ -126,6 +126,22 @@ func TestBestEffortAllocate(t *testing.T) {
 			2,
 			[]int{4, 5},
 		},
+		{
+			"Left Score Must Max",
+			New8xA10Node().Devices(),
+			[]int{0, 1, 2, 3, 4, 5},
+			[]int{},
+			4,
+			[]int{0, 1, 2, 3},
+		},
+		{
+			"Left Score Must Max",
+			New8xA10Node().Devices(),
+			[]int{0, 2, 3, 4, 5, 6, 7},
+			[]int{},
+			2,
+			[]int{2, 3},
+		},
 	}
 
 	RunPolicyAllocTests(t, policy, tests)
