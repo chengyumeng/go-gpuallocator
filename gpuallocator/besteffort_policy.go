@@ -60,15 +60,6 @@ func (p *bestEffortPolicy) Allocate(available []*Device, required []*Device, siz
 			return
 		}
 		score := calculateGPUPartitionScore(candidate)
-		arr := []string{}
-		for _, d := range candidate {
-			for _, dd := range d {
-				if dd != nil {
-					arr = append(arr, dd.String())
-				}
-			}
-		}
-		fmt.Println("chengyumeng: %v %d", arr, score)
 
 		if score > bestScore || bestPartition == nil {
 			bestPartition = candidate
@@ -93,9 +84,19 @@ func (p *bestEffortPolicy) Allocate(available []*Device, required []*Device, siz
 	bestSet := filteredBestPartition[0]
 	bestScore = calculateGPUSetScore(bestSet)
 	bestLeftScore := calculateGPUSetScore(getDiffSet(available, bestSet))
+	arr := []string{}
+	for _, d := range filteredBestPartition[0] {
+		arr = append(arr, d.String())
+	}
+	fmt.Println("chengyumeng:", arr, bestScore, bestLeftScore)
 	for i := 1; i < len(filteredBestPartition); i++ {
 		score := calculateGPUSetScore(filteredBestPartition[i])
 		leftScore := calculateGPUSetScore(getDiffSet(available, filteredBestPartition[i]))
+		arr := []string{}
+		for _, d := range filteredBestPartition[i] {
+			arr = append(arr, d.String())
+		}
+		fmt.Println("chengyumeng:", arr, score, leftScore)
 		if score > bestScore || (score == bestScore && bestLeftScore < leftScore) {
 			bestSet = filteredBestPartition[i]
 			bestScore = score
