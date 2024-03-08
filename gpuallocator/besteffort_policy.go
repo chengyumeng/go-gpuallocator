@@ -55,14 +55,19 @@ func (p *bestEffortPolicy) Allocate(available []*Device, required []*Device, siz
 	// all of the GPUs 'required' by the allocation.
 	bestPartition := [][]*Device(nil)
 	bestScore := 0
-	for _, item := range available {
-		fmt.Println("chengyumeng", item.Details())
-	}
 	iterateGPUPartitions(available, size, func(candidate [][]*Device) {
 		if !gpuPartitionContainsSetWithAll(candidate, required) {
 			return
 		}
 		score := calculateGPUPartitionScore(candidate)
+		arr := []string{}
+		for _, d := range candidate {
+			for _, dd := range d {
+				arr = append(arr, dd.String())
+			}
+		}
+		fmt.Println("chengyumeng: %v %d", arr, score)
+
 		if score > bestScore || bestPartition == nil {
 			bestPartition = candidate
 			bestScore = score
