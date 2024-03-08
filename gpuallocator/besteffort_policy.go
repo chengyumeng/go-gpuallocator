@@ -63,7 +63,9 @@ func (p *bestEffortPolicy) Allocate(available []*Device, required []*Device, siz
 		arr := []string{}
 		for _, d := range candidate {
 			for _, dd := range d {
-				arr = append(arr, dd.String())
+				if dd != nil {
+					arr = append(arr, dd.String())
+				}
 			}
 		}
 		fmt.Println("chengyumeng: %v %d", arr, score)
